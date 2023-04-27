@@ -1,0 +1,31 @@
+main#app-content{
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    background:white;
+    
+}
+
+#head-content{
+    background-color:white;
+    position:fixed;
+    width: 100%;
+    /* height:10%; */
+}
+
+#main-content{
+    margin-top: 6.5em;
+    background:rgba(36, 32, 32, 0.1);
+    position: fixed;
+    height:90%;
+    width:100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+#foot-content{
+    background-color:white;
+    position:fixed;
+    width: 100%;
+    bottom: 0;
+}
