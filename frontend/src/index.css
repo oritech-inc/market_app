@@ -1,31 +1,45 @@
-main#app-content{
+main#app-root{
     height: 100vh;
     width: 100vw;
     position: absolute;
-    background:white;
-    
+    background:rgba(52, 53, 65, 0.6);
+    color: white;
+    font-family: 'Roboto', sans-serif;
 }
 
-#head-content{
-    background-color:white;
-    position:fixed;
+header, section, footer{
     width: 100%;
-    /* height:10%; */
+    justify-content: center;
+    align-items: center;
 }
 
-#main-content{
-    margin-top: 6.5em;
-    background:rgba(36, 32, 32, 0.1);
-    position: fixed;
-    height:90%;
-    width:100%;
+header#head-content{
+    position: relative;
+    background:rgba(255, 255, 255, 1);
+    padding: 10px 0;
+}
+
+header div#form-content{
+    position: relative;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    /* background:rgba(255, 255, 255, 1); */
+}
+
+section#main-content{
+    background:rgba(69, 70, 85, 0.6);
+    color: rgba(255, 255, 255, 0.8);
+    position:relative;
+    height: 90vh;
+    width: 100vw;
     overflow-y: scroll;
     overflow-x: hidden;
 }
 
-#foot-content{
-    background-color:white;
-    position:fixed;
+footer#foot-content{
+    background-color:rgb(255, 255, 255);
+    position:relative; 
     width: 100%;
-    bottom: 0;
+    color: #05a705;
 }

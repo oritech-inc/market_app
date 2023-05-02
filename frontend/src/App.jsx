@@ -1,40 +1,109 @@
-// import React, { useState } from 'react'
-// import ReactDOM from 'react-dom/client';
+/* eslint-disable no-unused-vars */
+import React, { useState } from 'react'
+import ReactDOM from 'react-dom/client';
 import {
   Card, CardHeader, CardBody, Input, Button, Select, Checkbox,
   VStack, Box, Flex, HStack, Spacer, Grid, GridItem, Spinner,
-  Heading, Text, Tooltip, Badge, Center, CardFooter
+  Heading, Text, Tooltip, Badge, Center, CardFooter, Icon,
+  Stack, Show, Container, Kbd, Divider, Skeleton, SkeletonCircle, SkeletonText
 } from '@chakra-ui/react'
-import { ArrowForwardIcon } from '@chakra-ui/icons'
+import { ArrowForwardIcon, QuestionIcon } from '@chakra-ui/icons'
+import AppHeader from './AppHeader';
+import SelectForm from './components/forms/SelectForm';
+import AppContent from './AppContent';
+import AppFooter from './AppFooter';
 
-let itemList = [];
-// const [items, setItems] = useState();
 
 function App() {
 
+  // const [isLoaded, setIsLoaded] = React.useState(false)
+  let db_obj = getCommodities();
+  let str = [];
+  let ch = [];
+  
+  if (db_obj.length > 0) {
+    for (let i = 0; i < db_obj.length; i++) {
+      const element = db_obj[i];
+        str["header"] = [element.name, element.type, element.quantity, element.qty_unit];
+        str["body"] = [element.size, element.price];
+    CreateCard(str);
+    }
+    return (
+
+      <main id="app-root">
+
+        <header id="head-content">
+          <AppHeader />
+          <SelectForm />
+        </header>
+
+        <section id="main-content">
+          <AppContent/>
+        </section>
+
+        <footer id="foot-content">
+        <AppFooter />
+      </footer> 
+
+      </main>
+    )
+  }
+  else {
+    alert("null ");
+  }
+
+}
+
+// function renderApp(obj) {
+
+// }
+
+function getCommodities() {
   return (
-    <main id="app-content">
-      <div id='head-content'>
-        {renderMenuBar()}
-      </div>
-      <div id='main-content'>
-        <Center>
-          {renderMainContent()}
-        </Center>
-      </div>
-      <div id='foot-content'>
-        <Button w="150px" size={'sm'} rightIcon={<ArrowForwardIcon />}
-          bg='#05A705' color="white" variant='solid'>
-          Call us
-        </Button>
-      </div>
-    </main>
+    [
+      {
+        'id': 1,
+        'type': 'vg',
+        'name': 'Cabbages',
+        'size': 20.00,
+        'quantity': 30,
+        'qty_unit': 'Bags',
+        'price': 65.50
+      },
+      {
+        'id': 2,
+        'type': 'fr',
+        'name': 'Apples',
+        'size': 12.00,
+        'quantity': 25,
+        'qty_unit': 'Boxes',
+        'price': 128.00
+      }
+      ,
+      {
+        'id': 3,
+        'type': 'pt',
+        'name': 'Potatoes',
+        'size': 10.00,
+        'quantity': 60,
+        'qty_unit': 'Bags',
+      },
+      {
+        'id': 4,
+        'type': 'sq',
+        'name': 'Butternut',
+        'size': 10.00,
+        'quantity': 60,
+        'qty_unit': 'Bags',
+        'price': 60.20
+      }
+    ]
   )
 }
 
 //------------------------------------------- 
 // Render Menu Bar
-function renderMenuBar() {
+function AppHeading() {
   return (
     <VStack spacing={0} align='stretch' boxShadow='inner'>
       <Box my="">
@@ -42,7 +111,7 @@ function renderMenuBar() {
           <GridItem colSpan="5">
             <Center>
               <Heading as="h5" letterSpacing={"2px"} py={1}
-                fontWeight='600' textTransform="capitalize"
+                fontWeight='700' textTransform="uppercase"
                 color="#05A705">
                 Generate Quote
               </Heading>
@@ -50,128 +119,161 @@ function renderMenuBar() {
           </GridItem>
         </Grid>
       </Box>
-      <Box>
-        <Grid templateColumns='repeat(6, 1fr)' gap={1} px={1} py={1.5}>
-          {/* <GridItem w='100%' textIndent={1} fontSize="17px"
-            pt="2" fontWeight="700"
-            textColor={'red.700'}
-            colSpan={1}>
-            MARKET:
-          </GridItem> */}
-          <GridItem w='100%' colSpan={6} >
-
-            <Tooltip bg="#05A705" color={'white'} hasArrow
-              placement='bottom' label="Select Market from the list" 
-              aria-label='Average'
-            >
-              <Select placeholder='-- Select Market --' size="md"
-                variant='outline' onChange={handleChange}
-              >
-                <option value='bcm'>Buffalo City Fresh Produce Market</option>
-                <option value='rec'>RSA Eastern Cape</option>
-                <option value='nef'>North End Fresh Produce Market</option>
-                <option value='gbf'>Gqeberha Fresh Produce Market</option>
-              </Select>
-            </Tooltip>
-          </GridItem>
-        </Grid>
-      </Box>
     </VStack>
   )
 }
 
-function renderMainContent() {
+function AppContents() {
+  if (itemList.length > 0) {
+    const myList = itemList.map(
+      (item) => <>{CreateCard(item)}</>
+    )
+    const container = document.getElementById('main-content');
+    const root = ReactDOM.createRoot(container);
 
+    root.render(myList);
+
+    // for (let i = 0; i < itemList.length; i++) {
+    //   const item = itemList[i];
+    // }
+  } else {
+    alert("null ")
+  }
+  // return (
+  //   <Box boxShadow={"inner"} my={2} mx={1.5}
+  //     borderRadius={0} border="2px" borderColor={'teal'} w={"100%"} h={'100%'}>
+  //     <Card bg={0} borderColor={0} size={'sm'}>
+  //       <CardHeader bg={0} py={3}>
+  //         <Flex >
+  //           <Box w='100%'>
+  //             <Checkbox color="dark" size="lg" as="b">
+  //               CABBAGES
+  //             </Checkbox>
+  //           </Box>
+  //           <Box cursor={'pointer'}>
+  //             <Tooltip bg="#05A705" color={'white'} hasArrow
+  //               placement='top' label="Total number of stock available for this item"
+  //               aria-label='type'
+  //             >
+  //               <Badge>1000 Stock</Badge>
+  //             </Tooltip>
+  //           </Box>
+  //         </Flex>
+  //       </CardHeader>
+  //       <div>
+  //         <CardBody py={3} px={2}>
+  //           <HStack>
+  //             <Box>
+  //               <Text as="b" color={'blackAlpha.800'}>Quantity*</Text>
+  //               <Tooltip bg="green" color={'white'} hasArrow placement='bottom'
+  //                 label="" aria-label='quantity'>
+  //                 <Input size={'sm'} placeholder='Number of items' />
+  //               </Tooltip>
+  //             </Box>
+  //             <Box>
+  //               <Text as="b" color={'blackAlpha.800'}>Mass*</Text>
+  //               <Tooltip bg="green" color={'white'} hasArrow placement='bottom'
+  //                 label="" aria-label='mass'>
+  //                 <Input size={'sm'} placeholder='Size/weight of items' />
+  //               </Tooltip>
+  //             </Box>
+  //           </HStack>
+  //         </CardBody>
+  //       </div>
+  //       <Heading size='sm' mx={1} py={2}>Description</Heading>
+  //       <Divider ml={1} w={80} />
+  //       <Grid templateColumns='repeat(3, 1fr)' align="center" gap={0}>
+  //         <GridItem w='100%' colSpan={1} cursor={'pointer'}>
+  //           <Tooltip bg="green" color={'white'} hasArrow placement='bottom' label="Minimum selling price per item" aria-label='Lowest'>
+  //             <Badge colorScheme='teal' borderRadius={0} w={'100%'} h={'100%'}
+  //               variant={"outline"} pt={0.5} as={'h6'} size={'sm'}>
+  //               Lower<br /> 50.00
+  //             </Badge>
+  //           </Tooltip>
+  //         </GridItem>
+  //         <GridItem w='100%' colSpan={1} cursor={'pointer'}>
+  //           <Tooltip bg="green" color={'white'} hasArrow placement='bottom' label="Average selling price per item" aria-label='Average'>
+  //             <Badge colorScheme='green' borderRadius={0} w={'100%'} h={'100%'}
+  //               variant={"solid"} pt={0.5} as={'h6'} size={'sm'}>
+  //               Average<br /> 50.06
+  //             </Badge>
+  //           </Tooltip>
+  //         </GridItem>
+  //         <GridItem w='100%' colSpan={1} cursor={'pointer'}>
+  //           <Tooltip bg="green" color={'white'} hasArrow placement='bottom' label="Maximum selling price per item" aria-label='highest'>
+  //             <Badge colorScheme='teal' borderRadius={0} w={'100%'} h={'100%'}
+  //               variant={"outline"} pt={0.5} as={'h6'} size={'sm'}>
+  //               Higher<br /> 50.50
+  //             </Badge>
+  //           </Tooltip>
+  //         </GridItem>
+  //       </Grid>
+  //       <hr />
+  //       <CardFooter >
+  //         <Flex minWidth='max-content' alignItems='center' gap='2'>
+  //           <Box as="b" color={'blue.400'} w="200px">
+  //             Total Amount:
+  //           </Box>
+  //           <Box as="span">
+  //             <Kbd py={1}>R100000.00</Kbd>
+  //           </Box>
+  //         </Flex>
+  //       </CardFooter>
+  //     </Card>
+  //   </Box>
+  // )
+}
+
+function CreateCard(i) {
   return (
-    <Box>
-      <Card m={2} boxShadow={"xl"}>
-        <CardHeader py={3}>
+    <Box boxShadow={"inner"} my={2} mx={1.5}
+      borderRadius={0} border="2px" borderColor={'teal'} w={"100%"} h={'100%'}>
+      <Card bg={0} borderColor={0} size={'sm'}>
+        <CardHeader bg={0} py={3}>
           <Flex >
-              <Tooltip bg="#05A705" color={'white'} hasArrow
-                placement='top' label="Click to select commodity" aria-label='Average'
-              >
-            <Box w='100%' as="b">
-                <Checkbox size="lg">CABBAGES</Checkbox>
+            <Box w='100%'>
+              <Checkbox color="dark" size="lg" as="b">
+                {i[0]}
+              </Checkbox>
             </Box>
-              </Tooltip>
-            <Box>
+            <Box cursor={'pointer'}>
               <Tooltip bg="#05A705" color={'white'} hasArrow
-                placement='top' label="Commodity Type"
+                placement='top' label="Total number of stock available for this item"
                 aria-label='type'
               >
-                <Badge size="md">
-                  FR
-                </Badge>
+                <Badge>1000 Stock</Badge>
               </Tooltip>
             </Box>
           </Flex>
         </CardHeader>
-        <hr />
-        <CardBody py={5} px={2}>
-          <HStack>
-            <Box>
-              <Tooltip bg="#05A705" color={'white'} hasArrow placement='top'
-                label="Enter the total number of items required"
-                aria-label='Quantity'>
-                <Input placeholder='Quantity*' />
-              </Tooltip>
-            </Box>
-            <Box>
-              <Tooltip bg="#05A705" color={'white'} hasArrow placement='top'
-                label="Enter the total mass/weight/size required"
-                aria-label='Weight'>
-                <Input placeholder='Weight*' />
-              </Tooltip>
-            </Box>
-          </HStack>
-        </CardBody>
-        <hr />
-        <CardFooter m={1} p={1} >
-          {/* <Flex>
-            <Box p='2' w="270px">
-              <Heading size='md' color='red.500'>Total Amount:</Heading>
-            </Box>
-            <Box flex='1'>
-              <Button variant='outline' w="80px" disabled
-                _hover={{ cursor: 'text' }}
-              >
-                R0.00
-              </Button>
-            </Box>
-          </Flex> */}
-
-          <Grid templateColumns='repeat(3, 1fr)' gap={2}>
-            <GridItem w='100%' h='10' colSpan={1} >
-              <Tooltip bg="#05A705" color={'white'} hasArrow
-                placement='top' label="Minimum selling price per item" aria-label='Lowest'
-              >
-                <Badge colorScheme='yellow' variant={"outline"} borderRadius={'2xl'} p={1.5}>
-                  LOW: R50.00
-                </Badge>
-              </Tooltip>
-            </GridItem>
-            <GridItem w='100%' h='10' colSpan={1} >
-              <Tooltip bg="#05A705" color={'white'} hasArrow
-                placement='top' label="Maximum selling price per item" aria-label='highest'
-              >
-                <Badge colorScheme='red' variant={"outline"} borderRadius={'2xl'} p={1.5}>
-                  HIGH: R50.50
-                </Badge>
-              </Tooltip>
-            </GridItem>
-            <GridItem w='100%' h='10' colSpan={1} >
-              <Tooltip bg="#05A705" color={'white'} hasArrow
-                placement='top' label="Average selling price per item" aria-label='Average'
-              >
-                <Badge colorScheme='green' variant={"outline"} borderRadius={'2xl'} p={1.5}>
-                  AVERAGE: R50.06
-                </Badge>
-              </Tooltip>
-            </GridItem>
-          </Grid>
-        </CardFooter>
       </Card>
     </Box>
+  )
+}
+
+function AppForm() {
+  return (
+    <Box>
+      <Grid templateColumns='repeat(6, 1fr)' gap={1} px={1} py={1.5}>
+        <GridItem w='100%' colSpan={6} >
+          <Tooltip bg="#05A705" color={'white'} hasArrow
+            placement='bottom' label="Select Market from the list" aria-label='Average'>
+            <Select placeholder='-- Select Market --' size="md" variant='filled' onChange={handleChange}>
+              <option value='bcm'>Buffalo City Fresh Produce Market</option>
+            </Select>
+          </Tooltip>
+        </GridItem>
+      </Grid>
+    </Box>
+  )
+}
+
+function AppFooters() {
+  return (
+    <Button m="2" w="150px" size={'md'} rightIcon={<ArrowForwardIcon />}
+      bg='#05A705' color="white" variant='solid' align="end">
+      SUBMIT
+    </Button>
   )
 }
 
@@ -193,31 +295,6 @@ function addValue(v) {
     }
   }
 
-}
-
-function nullContent() {
-  return (
-    <Box py={2} px={1} align="center">
-      <Card bg="whiteAlpha.700" borderRadius="5px" align="center">
-        <Center>
-          <CardBody>
-            <Spinner
-              thickness='4px'
-              speed='0.5s'
-              emptyColor='blackAlpha.100'
-              color='red.500'
-              size='xl'
-            />
-            <Spacer />
-            <Text color='red.500' mt='2' textTransform='uppercase' fontWeight="500" as="h6"
-              fontStyle='italic'>
-              Please wait, Loading currently available items.
-            </Text>
-          </CardBody>
-        </Center>
-      </Card>
-    </Box>
-  )
 }
 
 export default App
