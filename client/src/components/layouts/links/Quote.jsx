@@ -27,6 +27,7 @@ function Quotes() {
       </VStack>
       <span>
         {crd()}
+        {crd2()}
       </span>
     </Stack>
 
@@ -73,26 +74,16 @@ function crd() {
                 CABBAGES
               </Checkbox>
             </Box>
-            <Box cursor={'pointer'}>
-              <Tooltip bg="#05A705" color={'white'} hasArrow
-                placement='top' label="Total number of stock available for this item"
-                aria-label='type'
-              >
-                <Badge>100 In Stock</Badge>
-              </Tooltip>
-            </Box>
           </Flex>
         </CardHeader>
         <hr/>
         <div>
-          {/* <Heading size='sm'>Prices</Heading> */}
-          <Divider ml={1} w={80} />
           <Grid templateColumns='repeat(3, 1fr)' align="center" gap={0}>
             <GridItem w='100%' colSpan={1} cursor={'pointer'}>
               <Tooltip bg="green" color={'white'} hasArrow placement='bottom' label="Minimum selling price per item" aria-label='Lowest'>
                 <Badge colorScheme='teal' borderRadius={0} w={'100%'} h={'100%'}
                   variant={"outline"} pt={0.5} as={'h6'} size={'sm'}>
-                  Lower<br /> 50.00
+                  Lower<br /> 130.00
                 </Badge>
               </Tooltip>
             </GridItem>
@@ -100,7 +91,7 @@ function crd() {
               <Tooltip bg="green" color={'white'} hasArrow placement='bottom' label="Average selling price per item" aria-label='Average'>
                 <Badge colorScheme='green' borderRadius={0} w={'100%'} h={'100%'}
                   variant={"solid"} pt={0.5} as={'h6'} size={'sm'}>
-                  Average<br /> 50.06
+                  Average<br /> 135.84
                 </Badge>
               </Tooltip>
             </GridItem>
@@ -108,7 +99,7 @@ function crd() {
               <Tooltip bg="green" color={'white'} hasArrow placement='bottom' label="Maximum selling price per item" aria-label='highest'>
                 <Badge colorScheme='teal' borderRadius={0} w={'100%'} h={'100%'}
                   variant={"outline"} pt={0.5} as={'h6'} size={'sm'}>
-                  Higher<br /> 50.50
+                  Higher<br /> 150.00
                 </Badge>
               </Tooltip>
             </GridItem>
@@ -133,13 +124,90 @@ function crd() {
           </CardBody>
         </div>
         <hr />
-        <CardFooter alignItems='start'>
-          <Flex minWidth='max-content' gap='2'>
+        <CardFooter align='start'>
+          <Flex minWidth='max-content' gap='1'>
             <Box as="b" color={'blue.400'} w="200px">
               Total Amount:
             </Box>
             <Box as="span">
-              <Kbd py={1}>R100000.00</Kbd>
+              <Kbd py={2}>R4075.20</Kbd>
+            </Box>
+          </Flex>
+        </CardFooter>
+      </Card>
+    </Box>
+  )
+}
+
+function crd2() {
+  return (
+    <Box boxShadow={"inner"} my={2} mx={1.5}
+      borderRadius={0} border="2px" borderColor={'#05A705'} w={"100%"} h={'100%'}>
+      <Card bg={0} borderColor={0} size={'sm'}>
+        <CardHeader bg={0} py={3} align="start">
+          <Flex >
+            <Box w='100%' >
+              <Checkbox color="dark" size="lg" as="b">
+                APPLES
+              </Checkbox>
+            </Box>
+          </Flex>
+        </CardHeader>
+        <hr/>
+        <div>
+          <Grid templateColumns='repeat(3, 1fr)' align="center" gap={0}>
+            <GridItem w='100%' colSpan={1} cursor={'pointer'}>
+              <Tooltip bg="green" color={'white'} hasArrow placement='bottom' label="Minimum selling price per item" aria-label='Lowest'>
+                <Badge colorScheme='teal' borderRadius={0} w={'100%'} h={'100%'}
+                  variant={"outline"} pt={0.5} as={'h6'} size={'sm'}>
+                  Lower<br /> 125.00
+                </Badge>
+              </Tooltip>
+            </GridItem>
+            <GridItem w='100%' colSpan={1} cursor={'pointer'}>
+              <Tooltip bg="green" color={'white'} hasArrow placement='bottom' label="Average selling price per item" aria-label='Average'>
+                <Badge colorScheme='green' borderRadius={0} w={'100%'} h={'100%'}
+                  variant={"solid"} pt={0.5} as={'h6'} size={'sm'}>
+                  Average<br /> 128.06
+                </Badge>
+              </Tooltip>
+            </GridItem>
+            <GridItem w='100%' colSpan={1} cursor={'pointer'}>
+              <Tooltip bg="green" color={'white'} hasArrow placement='bottom' label="Maximum selling price per item" aria-label='highest'>
+                <Badge colorScheme='teal' borderRadius={0} w={'100%'} h={'100%'}
+                  variant={"outline"} pt={0.5} as={'h6'} size={'sm'}>
+                  Higher<br /> 130.50
+                </Badge>
+              </Tooltip>
+            </GridItem>
+          </Grid>
+          <CardBody py={3} px={2}>
+            <HStack>
+              <Box>
+                <Text as="b" color={'blackAlpha.800'}>Quantity*</Text>
+                <Tooltip bg="green" color={'white'} hasArrow placement='bottom'
+                  label="" aria-label='quantity'>
+                  <Input size={'sm'} placeholder='Number of items' />
+                </Tooltip>
+              </Box>
+              <Box>
+                <Text as="b" color={'blackAlpha.800'}>Mass*</Text>
+                <Tooltip bg="green" color={'white'} hasArrow placement='bottom'
+                  label="" aria-label='mass'>
+                  <Input size={'sm'} placeholder='Size/weight of items' />
+                </Tooltip>
+              </Box>
+            </HStack>
+          </CardBody>
+        </div>
+        <hr />
+        <CardFooter align='start'>
+          <Flex minWidth='max-content' gap='1'>
+            <Box as="b" color={'blue.400'} w="200px">
+              Total Amount:
+            </Box>
+            <Box as="span">
+              <Kbd py={2}>R3200.00</Kbd>
             </Box>
           </Flex>
         </CardFooter>

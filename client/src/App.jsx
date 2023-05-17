@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useState } from 'react'
-import { BrowserRouter as Router, Link, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './App.css'
 import Header from './components/layouts/Header'
 import Home from './components/layouts/Home'
@@ -8,7 +8,6 @@ import Enquiry from './components/layouts/links/Enquiry'
 import Items from './components/layouts/links/Items'
 import Quotes from './components/layouts/links/Quote'
 import Footer from './components/layouts/Footer'
-// import './assets/js/main.js'
 
 function App() {
   // const [count, setCount] = useState(0)
