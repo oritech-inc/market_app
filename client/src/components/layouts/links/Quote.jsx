@@ -1,264 +1,162 @@
 /* eslint-disable no-unused-vars */
-import React from 'react'
+import React, { useEffect, useState } from "react"
+import Axios from "axios"
 import {
-  Card, CardHeader, CardBody, Input, Button, Select, Checkbox,
-  VStack, Box, Flex, HStack, Spacer, Grid, GridItem, Spinner,
-  Heading, Text, Tooltip, Badge, Center, CardFooter, Icon,
-  Stack, Show, Container, Kbd, Divider, Skeleton, SkeletonCircle, SkeletonText
-} from '@chakra-ui/react'
+  Box, Divider, VStack, Spacer, Button, CardFooter, HStack, Card, CardHeader, CardBody,
+  Kbd, Input, Text, Badge, Grid, GridItem, NumberInput, NumberInputField, NumberDecrementStepper, NumberIncrementStepper,
+  NumberInputStepper, Table, Thead, Tbody, TableContainer, Tr, Th, Td, TableCaption,
+} from "@chakra-ui/react"
+import { MdAdd, MdArrowForward } from "react-icons/md"
 
-function Quotes() {
-  // let renderUI = getQuote(getData());
+function App() {
+  let ob = [];
+  const [data1, setData] = useState([]);
+  const [market, setMarket] = useState("");
+  const [commodities, setCommodities] = useState([]);
+  const [products, setProducts] = useState([]);
+
+  // useEffect(() => {
+  //   fetch("http://localhost:5008/markets")
+  //     .then((res) => res.json())
+  //     .then((data1) => setData(data1))
+  //     .catch((err) => console.log(err));
+  // }, []);
+
+  // useEffect(() => {
+  //   fetch("http://localhost:5008/products")
+  //     .then((res) => res.json())
+  //     .then((products) => setProducts(products))
+  //     .catch((err) => console.log(err));
+  // }, []);
+
+  useEffect(() => {
+    const fetchCommodities = async () => {
+      let postFormData = new FormData();
+
+      postFormData.append("query", "item-stats");
+      postFormData.append("device", "9c2807cb-1e06-4fae-8a43-418189035eca");
+      postFormData.append("market", 17);
+      postFormData.append("item_code", "ON");
+      postFormData.append("api_key", "2766D02F-D00D-B0FD-FDB5-3C310DFB9964");
+      postFormData.append(
+        "event_id",
+        "GkPLQfMjImbCgq7Dyfb4W4Pi9jrx24q2YgkXQqQF"
+      );
+
+      const response = await fetch(
+        "https://webservices.freshmarksystems.co.za/mobiapi/market-query",
+        {
+          method: "POST",
+          body: postFormData,
+        }
+      );
+
+      const responseData = await response.json();
+      const data = responseData.result.trans;
+      setCommodities(data);
+      console.log(commodities);
+    };
+    fetchCommodities();
+  }, []);
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    alert('clicked');
+
+  };
+  const handleArray = (e) => {
+    e.preventDefault();
+    const id = e.target.value;
+    const index = ob.indexOf(id);
+    if (index > -1) {
+      // ob.splice(index, 1);
+      alert("Removed");
+    } else {
+      alert("Added");
+    }
+    console.log(ob);
+  };
+
   return (
-    <Stack my={12}>
-      <VStack>
-        <Box p={0} m={0}>
-          <Grid templateColumns='repeat(6, 1fr)'>
-            <GridItem w='100%' colSpan={6} >
-              <Tooltip hasArrow
-                placement='bottom' label="Select Market from the list" aria-label='Average'>
-                <Select placeholder='-- Select Market --' variant='outline' onChange={handleChange}>
-                  <option value='bcm'>Buffalo City Fresh Produce Market</option>
-                </Select>
-              </Tooltip>
-            </GridItem>
-          </Grid>
-        </Box>
-      </VStack>
-      <span>
-        {crd()}
-        {crd2()}
-      </span>
-    </Stack>
-
-  )
+    <>
+      <Box m={0} p={0} w="100%" bg="">
+        {commodities.map((d, i) => (
+          <span key={i} id="market-data1">
+            <VStack py={1} spacing="1" border={"1xp"}>
+              <Card borderColor="black"
+                w={"97%"} h={"100%"} my={2} borderRadius={"lg"}
+              >
+                <Grid templateColumns='repeat(1, 1fr)' align="center" gap={0}>
+                  <GridItem w='100%' colSpan={1} cursor={'pointer'}>
+                    <Badge borderRadius={0} w={'100%'} h={'100%'}
+                      variant={"solid"} py={2} size={'sm'}
+                      colorScheme="teal"
+                    >
+                    {d.commodity}
+                    </Badge>
+                  </GridItem>
+                </Grid>
+                <CardHeader w={"100%"} p={0.5} align="center">
+                  <Text as="b"
+                    color={"tomato"}
+                    size="sm"
+                    textTransform="uppercase"
+                  >
+                    Average: R{d.average.toFixed(2)}
+                  </Text>
+                </CardHeader>
+                <Divider/>
+                <Box>
+                  <TableContainer>
+                    <Table variant='striped' colorScheme='teal' size='md'>
+                      <Thead>
+                        <Tr>
+                          <Th>Quantity</Th>
+                          <Td>
+                            <NumberInput size={'md'} width={'100%'}
+                              min={0} max={d.sold} defaultValue={0} value={0}>
+                              <NumberInputField />
+                              <NumberInputStepper>
+                                <NumberIncrementStepper />
+                                <NumberDecrementStepper />
+                              </NumberInputStepper>
+                            </NumberInput>
+                          </Td>
+                        </Tr>
+                      </Thead>
+                      <Tbody>
+                        <Tr>
+                          <Th>Total: </Th>
+                          <Td >R0.00</Td>
+                        </Tr>
+                      </Tbody>
+                    </Table>
+                  </TableContainer>
+                </Box>
+                <CardFooter p={2}>
+                  <Button
+                    w={"100%"}
+                    rightIcon={<MdAdd />}
+                    colorScheme="teal"
+                    variant="outline"
+                    size={"sm"}
+                    rounded={"full"}
+                    _hover={{
+                      bg: "teal",
+                      color: "white",
+                    }}
+                    onClick={handleClick}
+                  >
+                    ADD TO CART
+                  </Button>
+                </CardFooter>
+              </Card>
+            </VStack>
+          </span>
+        ))}
+      </Box>
+    </>
+  );
 }
 
-function getQuote(obj) {
-  let str = {};
-  let divs = '';
-
-  for (let i = 0; i < obj.length; i++) {
-    const element = [obj[i]];
-    element.forEach(e => {
-
-      alert(mk([e.name, e.price]))
-      divs += `<div>${element}</div>`;
-    })
-    // alert(divs);
-  }
-  return divs;
-}
-function renderUI(obj) {
-  for (let i = 0; i < obj.length; i++) {
-    return obj[i];
-  }
-}
-
-function mk(n) {
-  return (
-    <Box>
-      {(n[0])} {n[1]}
-    </Box>
-  )
-}
-function crd() {
-  return (
-    <Box boxShadow={"inner"} my={2} mx={1.5}
-      borderRadius={0} border="2px" borderColor={'#05A705'} w={"100%"} h={'100%'}>
-      <Card bg={0} borderColor={0} size={'sm'}>
-        <CardHeader bg={0} py={3} align="start">
-          <Flex >
-            <Box w='100%' >
-              <Checkbox color="dark" size="lg" as="b">
-                CABBAGES
-              </Checkbox>
-            </Box>
-          </Flex>
-        </CardHeader>
-        <hr/>
-        <div>
-          <Grid templateColumns='repeat(3, 1fr)' align="center" gap={0}>
-            <GridItem w='100%' colSpan={1} cursor={'pointer'}>
-              <Tooltip bg="green" color={'white'} hasArrow placement='bottom' label="Minimum selling price per item" aria-label='Lowest'>
-                <Badge colorScheme='teal' borderRadius={0} w={'100%'} h={'100%'}
-                  variant={"outline"} pt={0.5} as={'h6'} size={'sm'}>
-                  Lower<br /> 130.00
-                </Badge>
-              </Tooltip>
-            </GridItem>
-            <GridItem w='100%' colSpan={1} cursor={'pointer'}>
-              <Tooltip bg="green" color={'white'} hasArrow placement='bottom' label="Average selling price per item" aria-label='Average'>
-                <Badge colorScheme='green' borderRadius={0} w={'100%'} h={'100%'}
-                  variant={"solid"} pt={0.5} as={'h6'} size={'sm'}>
-                  Average<br /> 135.84
-                </Badge>
-              </Tooltip>
-            </GridItem>
-            <GridItem w='100%' colSpan={1} cursor={'pointer'}>
-              <Tooltip bg="green" color={'white'} hasArrow placement='bottom' label="Maximum selling price per item" aria-label='highest'>
-                <Badge colorScheme='teal' borderRadius={0} w={'100%'} h={'100%'}
-                  variant={"outline"} pt={0.5} as={'h6'} size={'sm'}>
-                  Higher<br /> 150.00
-                </Badge>
-              </Tooltip>
-            </GridItem>
-          </Grid>
-          <CardBody py={3} px={2}>
-            <HStack>
-              <Box>
-                <Text as="b" color={'blackAlpha.800'}>Quantity*</Text>
-                <Tooltip bg="green" color={'white'} hasArrow placement='bottom'
-                  label="" aria-label='quantity'>
-                  <Input size={'sm'} placeholder='Number of items' />
-                </Tooltip>
-              </Box>
-              <Box>
-                <Text as="b" color={'blackAlpha.800'}>Mass*</Text>
-                <Tooltip bg="green" color={'white'} hasArrow placement='bottom'
-                  label="" aria-label='mass'>
-                  <Input size={'sm'} placeholder='Size/weight of items' />
-                </Tooltip>
-              </Box>
-            </HStack>
-          </CardBody>
-        </div>
-        <hr />
-        <CardFooter align='start'>
-          <Flex minWidth='max-content' gap='1'>
-            <Box as="b" color={'blue.400'} w="200px">
-              Total Amount:
-            </Box>
-            <Box as="span">
-              <Kbd py={2}>R4075.20</Kbd>
-            </Box>
-          </Flex>
-        </CardFooter>
-      </Card>
-    </Box>
-  )
-}
-
-function crd2() {
-  return (
-    <Box boxShadow={"inner"} my={2} mx={1.5}
-      borderRadius={0} border="2px" borderColor={'#05A705'} w={"100%"} h={'100%'}>
-      <Card bg={0} borderColor={0} size={'sm'}>
-        <CardHeader bg={0} py={3} align="start">
-          <Flex >
-            <Box w='100%' >
-              <Checkbox color="dark" size="lg" as="b">
-                APPLES
-              </Checkbox>
-            </Box>
-          </Flex>
-        </CardHeader>
-        <hr/>
-        <div>
-          <Grid templateColumns='repeat(3, 1fr)' align="center" gap={0}>
-            <GridItem w='100%' colSpan={1} cursor={'pointer'}>
-              <Tooltip bg="green" color={'white'} hasArrow placement='bottom' label="Minimum selling price per item" aria-label='Lowest'>
-                <Badge colorScheme='teal' borderRadius={0} w={'100%'} h={'100%'}
-                  variant={"outline"} pt={0.5} as={'h6'} size={'sm'}>
-                  Lower<br /> 125.00
-                </Badge>
-              </Tooltip>
-            </GridItem>
-            <GridItem w='100%' colSpan={1} cursor={'pointer'}>
-              <Tooltip bg="green" color={'white'} hasArrow placement='bottom' label="Average selling price per item" aria-label='Average'>
-                <Badge colorScheme='green' borderRadius={0} w={'100%'} h={'100%'}
-                  variant={"solid"} pt={0.5} as={'h6'} size={'sm'}>
-                  Average<br /> 128.06
-                </Badge>
-              </Tooltip>
-            </GridItem>
-            <GridItem w='100%' colSpan={1} cursor={'pointer'}>
-              <Tooltip bg="green" color={'white'} hasArrow placement='bottom' label="Maximum selling price per item" aria-label='highest'>
-                <Badge colorScheme='teal' borderRadius={0} w={'100%'} h={'100%'}
-                  variant={"outline"} pt={0.5} as={'h6'} size={'sm'}>
-                  Higher<br /> 130.50
-                </Badge>
-              </Tooltip>
-            </GridItem>
-          </Grid>
-          <CardBody py={3} px={2}>
-            <HStack>
-              <Box>
-                <Text as="b" color={'blackAlpha.800'}>Quantity*</Text>
-                <Tooltip bg="green" color={'white'} hasArrow placement='bottom'
-                  label="" aria-label='quantity'>
-                  <Input size={'sm'} placeholder='Number of items' />
-                </Tooltip>
-              </Box>
-              <Box>
-                <Text as="b" color={'blackAlpha.800'}>Mass*</Text>
-                <Tooltip bg="green" color={'white'} hasArrow placement='bottom'
-                  label="" aria-label='mass'>
-                  <Input size={'sm'} placeholder='Size/weight of items' />
-                </Tooltip>
-              </Box>
-            </HStack>
-          </CardBody>
-        </div>
-        <hr />
-        <CardFooter align='start'>
-          <Flex minWidth='max-content' gap='1'>
-            <Box as="b" color={'blue.400'} w="200px">
-              Total Amount:
-            </Box>
-            <Box as="span">
-              <Kbd py={2}>R3200.00</Kbd>
-            </Box>
-          </Flex>
-        </CardFooter>
-      </Card>
-    </Box>
-  )
-}
-function handleChange(e) {
-  console.log(e.target.value)
-}
-
-function getData() {
-  return (
-    [
-      {
-        'id': 1,
-        'type': 'vg',
-        'name': 'Cabbages',
-        'size': 20.00,
-        'quantity': 30,
-        'qty_unit': 'Bags',
-        'price': 65.50
-      },
-      {
-        'id': 2,
-        'type': 'fr',
-        'name': 'Apples',
-        'size': 12.00,
-        'quantity': 25,
-        'qty_unit': 'Boxes',
-        'price': 128.00
-      }
-      ,
-      {
-        'id': 3,
-        'type': 'pt',
-        'name': 'Potatoes',
-        'size': 10.00,
-        'quantity': 60,
-        'qty_unit': 'Bags',
-      },
-      {
-        'id': 4,
-        'type': 'sq',
-        'name': 'Butternut',
-        'size': 10.00,
-        'quantity': 60,
-        'qty_unit': 'Bags',
-        'price': 60.20
-      }
-    ]
-  )
-}
-export default Quotes
+export default App;

@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { Badge, Grid, GridItem, Spacer } from "@chakra-ui/react"
 import './App.css'
 import Header from './components/layouts/Header'
 import Home from './components/layouts/Home'
@@ -23,11 +24,20 @@ function App() {
             <Route path='/' element={<Home />} />
             <Route path='/quotes' element={<Quotes />} />
             <Route path='/enquiry' element={<Enquiry />} />
-            <Route path='/items' element={<Items />} />
+            <Route path='/items' element={<Items />} /> 
           </Routes>
-        </section>
-        <footer id='app-footer'>
-          <Footer />
+        </section> 
+        <footer id='app-footer' style={{ borderTop: '1px solid rgba(0, 0, 0, 0.3)' }}>
+
+          <Grid templateColumns='repeat(5, 1fr)' align="" gap={1}>
+            <GridItem colSpan={2}>
+              <Badge>Total Amount: R...</Badge>
+            </GridItem>
+            <Spacer />
+            <GridItem cursor={'pointer'} colStart={5} colEnd={6}>
+              <Footer />
+            </GridItem>
+          </Grid>
         </footer>
       </main>
     </Router>

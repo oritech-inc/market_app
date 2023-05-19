@@ -2,7 +2,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import {
-    Grid, GridItem, Button, Stack, Center, useDisclosure, HStack,
+    Grid, GridItem, Button, Stack, Center, useDisclosure, HStack, Badge,
     Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton,
     Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, TableContainer,
 } from '@chakra-ui/react'
@@ -10,13 +10,8 @@ import { ArrowForwardIcon } from '@chakra-ui/icons'
 function Header() {
     return (
         <Grid templateColumns='repeat(6, 1fr)' gap={0}>
-            <GridItem colSpan="6">
-                <Center>
-                    {/* <Text size='xs' color={'whiteAlpha.500'}>
-                        FMS &copy; 2023
-                    </Text> */}
-                    {ButtonUI()}
-                </Center>
+            <GridItem>
+                {ButtonUI()}
             </GridItem>
         </Grid>
     )
@@ -25,9 +20,9 @@ function Header() {
 function ButtonUI() {
     const { isOpen, onOpen, onClose } = useDisclosure()
     return (
-        <Stack direction='row' spacing={4}>
-            <Button onClick={onOpen} rightIcon={<ArrowForwardIcon />} size='sm' w='300px' colorScheme='green' variant='solid'>
-                Generate
+        <Stack direction='column' spacing={4}>
+            <Button onClick={onOpen} rightIcon={<ArrowForwardIcon />} size='sm' colorScheme='green' rounded={'full'} variant='solid'>
+                CONTINUE
             </Button>
             <Modal isOpen={isOpen} size='full' onClose={onClose}>
                 <ModalOverlay />
@@ -52,6 +47,7 @@ function ButtonUI() {
         </Stack>
     )
 }
+
 
 function modalTable() {
     return (
