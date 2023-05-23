@@ -57,7 +57,7 @@ function modalTable() {
                 <Thead>
                     <Tr>
                         <Th>Description</Th>
-                        <Th>Size/Weight</Th>
+                        <Th>Mass</Th>
                         <Th>Quantity</Th>
                         <Th>Average</Th>
                         <Th>Amount</Th>
@@ -67,14 +67,14 @@ function modalTable() {
                     <Tr>
                         <Td>Cabbages</Td>
                         <Td>20 Kg</Td>
-                        <Td>30 Bags</Td>
+                        <Td>30 </Td>
                         <Td>135.84</Td>
                         <Td>4075.20</Td>
                     </Tr>
                     <Tr>
                         <Td>Apples</Td>
                         <Td>12 Kg</Td>
-                        <Td>25 Boxes</Td>
+                        <Td>25 </Td>
                         <Td>128.06</Td>
                         <Td>3200.00</Td>
                     </Tr>

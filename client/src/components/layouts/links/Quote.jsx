@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useRef } from "react"
+import { useId } from 'react';
 import Axios from "axios"
 import {
   Box, Tooltip, Select, Divider, VStack, Spacer, Button, CardFooter, HStack, Card, CardHeader, CardBody,
@@ -14,7 +15,12 @@ function App() {
   const [commodities, setCommodities] = useState([]);
   const [products, setProducts] = useState([]);
   const [itemCode, setItemCode] = useState("");
-  const [totmass, setTotMass] = useState("");
+  const [mass, setMass] = useState("");
+  const [totMass, setTotMass] = useState("");
+  const [amount, setAmount] = useState("");
+  const [qty, setQty] = useState("");
+  const id = useId();
+  const inputRef = useRef(null);
 
   useEffect(() => {
     fetch("http://localhost:5009/markets")
@@ -40,9 +46,7 @@ function App() {
         postFormData.append("market", 17);
         postFormData.append("item_code", itemCode);
         postFormData.append("api_key", "2766D02F-D00D-B0FD-FDB5-3C310DFB9964");
-        postFormData.append(
-          "event_id",
-          "GkPLQfMjImbCgq7Dyfb4W4Pi9jrx24q2YgkXQqQF"
+        postFormData.append("event_id", "GkPLQfMjImbCgq7Dyfb4W4Pi9jrx24q2YgkXQqQF"
         );
 
         const response = await fetch(
@@ -63,16 +67,30 @@ function App() {
     }
   }, [itemCode]);
 
+  const handleQty = (e) => {
+    //e.preventDefault();
+    //setQty(e.target.value);
+    alert(inputRef.current.value);
+  };
+
   const handleClick = (e) => {
+
+    console.log("test");
     e.preventDefault();
-    alert('clicked');
+    alert("Added to Cart");
 
   };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  }
 
   const handleChangeItems = (e) => {
     e.preventDefault();
     setItemCode(e.target.value);
   };
+
+
 
   const handleArray = (e) => {
     e.preventDefault();
@@ -85,6 +103,22 @@ function App() {
       alert("Added");
     }
     console.log(ob);
+  };
+
+  const handleInputMass = (event) => {
+    setMass(event.target.value);
+  };
+
+
+  const handleTdAmount = (event) => {
+    setAmount(event.target.value);
+    console.log(amount);
+  };
+
+
+  const handleTdTotMass = (event) => {
+    setTotMass(event.target.value);
+    console.log(totMass);
   };
 
   return (
@@ -132,7 +166,7 @@ function App() {
           </Select>
         </Tooltip>
       </Box>
-      <Box m={0} p={0} w="100%" bg="">
+      <Box m={0} p={0} w="100%" bg="" id={id} >
         {commodities.map((d, i) => (
           <span key={i} id="market-markets">
             <VStack py={1} spacing="1" border={"1xp"}>
@@ -166,21 +200,30 @@ function App() {
                         <Tr>
                           <Th>Quantity</Th>
                           <Td>
-                            <NumberInput size={'md'} width={'100%'}
-                              min={0} max={d.sold} defaultValue={0} value={0}>
+                            {/*<NumberInput size={'md'} width={'100%'}
+                              min={0} defaultValue={0} ref={inputRef} onChange={handleInputTotMass}  >
                               <NumberInputField />
-                              <NumberInputStepper>
+                              <NumberInputStepper >
                                 <NumberIncrementStepper />
                                 <NumberDecrementStepper />
                               </NumberInputStepper>
-                            </NumberInput>
+        </NumberInput>*/}
+                            <Input
+                              size={"sm"}
+                              placeholder="qty"
+                              name="input + {i}"
+
+                              onChange={handleInputMass}
+                            />
                           </Td>
                         </Tr>
                       </Thead>
                       <Tbody>
                         <Tr>
                           <Th>Total: </Th>
-                          <Td >R0.00</Td>
+                          <Td onChange={handleTdAmount} value={(d.average * mass).toFixed(2)}>R {(d.average * mass).toFixed(2)}</Td>
+                          <Th>Mass: </Th>
+                          <Td onChange={handleTdTotMass} value={d.cont_mass * mass}> {d.cont_mass * mass} KG</Td>
                         </Tr>
                       </Tbody>
                     </Table>
